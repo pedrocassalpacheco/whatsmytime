@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="whatsmytime">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Whats My Time - Timing Systems</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600">
+    <!-- https://fonts.google.com/specimen/Open+Sans -->
+    <link rel="stylesheet" href="css/fontawesome.min.css">
+    <!-- https://fontawesome.com/ -->
+    <link rel="stylesheet" href="css/fullcalendar.min.css">
+    <!-- https://fullcalendar.io/ -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- https://getbootstrap.com/ -->
+    <link rel="stylesheet" href="css/tooplate.css">
+</head>
+
+<body id="Main Page">
+<div class="" id="home" ng-app="whatsmytime">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navbar-expand-xl navbar-light bg-light">
+                    <a class="navbar-brand" href="#">
+                        <i class="fas fa-3x fa-tachometer-alt tm-site-icon"></i>
+                        <h1 class="tm-site-title mb-0">What's My Time</h1>
+                    </a>
+                    <button class="navbar-toggler ml-auto mr-0" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mx-auto">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#">Dashboard
+                                    <span class="sr-only">(current)</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true"
+                                   aria-expanded="false">
+                                    Racers
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="add-racer.html">Add Racer</a>
+                                </div>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="races.html" id="navbarRaces" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true"
+                                   aria-expanded="false">
+                                    Races
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarRacesDropdown">
+                                    <a class="dropdown-item" href="add-race.html">Add Race</a>
+                                    <a class="dropdown-item" href="start-run.html">Start Run</a>
+                                    <a class="dropdown-item" href="runs.html">Race Report</a>
+                                </div>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="accounts.html">Accounts</a>
+                            </li>
+                        </ul>
+
+                        <ul class="navbar-nav" ng-controller="timecontroller">
+                            <li class="nav-item">
+                                <a class="nav-link d-flex">
+                                    <i class="mr-2"></i>
+                                    {{ ct }}
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="navbar-nav" ng-controller="maincontroller">
+                            <li class="nav-item">
+                                <a class="nav-link d-flex">
+                                    <i class="mr-2"></i>
+                                    {{ currentrace }}
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link d-flex" href="login.html">
+                                    <i class="far fa-user mr-2 tm-logout-icon"></i>
+                                    <span>Logout</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!-- row -->
+        <div class="row tm-content-row tm-mt-big">
+            <div class="tm-col tm-col-md">
+                <div class="bg-white tm-block h-100">
+                    <h2 class="tm-block-title">Performance</h2>
+                    <canvas id="barChart"></canvas>
+                </div>
+            </div>
+            <div class="tm-col tm-col-md">
+                <div class="bg-white tm-block h-100">
+                    <div class="row">
+                        <div class="col-8">
+                            <h2 class="tm-block-title d-inline-block">Current Runs</h2>
+                        </div>
+                        <div class="col-4 text-right">
+                            <a href="runs.html" class="tm-link-black">View All</a>
+                        </div>
+                    </div>
+
+                    <ul class="tm-list-group tm-list-group-alternate-color tm-list-group-pad-big" ng-controller="maincontroller">
+                        <li class="tm-list-group-item" ng-repeat="r in latestRuns">
+                            <pre>{{ r.firstName+" "+ r.lastName }}  &#9; {{ r.deviceFinishTime - r.deviceStartTime }}</pre>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <footer class="row tm-mt-small">
+            <div class="col-12 font-weight-light" ng-controller="maincontroller">
+                <p class="d-inline-block tm-bg-black text-white py-2 px-4">
+                    Copyright &copy; 2020 What's My Time
+                    Full Name: {{firstName + " " + lastName}}
+                    <a rel="nofollow" href="https://www.soickm.com" class="text-white tm-footer-link"></a>
+                </p>
+            </div>
+        </footer>
+    </div>
+</div>
+
+<!-- Angular -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular-route.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular-resource.min.js"></script>
+
+<!-- Self -->
+<script src="js/whatsmytime.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/Chart.min.js"></script>
+<script src="js/fullcalendar.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/tooplate-scripts.js"></script>
+<script>
+    let ctxLine,
+        ctxBar,
+        ctxPie,
+        optionsLine,
+        optionsBar,
+        optionsPie,
+        configLine,
+        configBar,
+        configPie,
+        lineChart;
+    barChart;
+    // DOM is ready
+    $(function () {
+        updateChartOptions();
+        drawLineChart(); // Line Chart
+        drawBarChart(); // Bar Chart
+        drawPieChart(); // Pie Chart
+        drawCalendar(); // Calendar
+
+        $(window).resize(function () {
+            updateChartOptions();
+            updateLineChart();
+            updateBarChart();
+            reloadPage();
+        });
+    })
+</script>
+
+</body>
+</html>
